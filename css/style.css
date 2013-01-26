@@ -30,7 +30,7 @@ footer {
 }
 
 .slideshow {
-  background-image: url(../img/peace_bridge.jpg);
+  background-image: url(../img/calgary_skyline.jpg);
   background-position: 0 center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -101,7 +101,7 @@ footer {
   padding-top:10px;
   border-top:3px solid #eee;
 }
-.post > h3.title span.date { 
+.post > h3.title span.date {
   position:absolute;
   right:0;
   font-size:0.9em;
