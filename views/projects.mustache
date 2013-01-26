@@ -1,0 +1,42 @@
+<div class="container-fluid">
+	<div class="row-fluid">
+	  <div class="span12">
+	    <h1>Our Projects</h1>
+	    <hr>
+	  </div>
+	</div>
+
+	{{#projects}}
+	<div class="project">
+	  <div class="row-fluid">
+	    <div class="span12">
+	      <h2>{{name}}</h2>
+	      <h3>{{description}}</h3>
+	    </div>
+	  </div>
+
+	  <div class="row-fluid">
+	    <div class="description span6">
+	      <p>(Project Summary markdown) Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	      consequat.</p>
+
+	      <ul class="media-list">
+	        <li class="media">
+	          <i class="icon-github">
+	          <a href="{{html_url}}" target="_blank"></i>Github Repo</a>
+	        </li>
+	        <li class="media">
+	          <i class="icon-globe"></i>
+	          <a href="{{homepage}}" target="_blank">Home Page</a>
+	        </li>
+	      </ul>
+	    </div>
+	    <div class="span6">
+	      <img class="media-object" data-src="holder.js/300x300">
+	    </div>
+	  </div>
+	</div><!-- ./project -->
+	{{/projects}}
+</div>
