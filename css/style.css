@@ -1,0 +1,144 @@
+/* Override some defaults */
+html, body {
+  color: #E2E2E2;
+  background-color: #eee;
+  background-image: url(../img/low_contrast_linen.png);
+  background-repeat: repeat;
+}
+
+h1, h2, h3, h4, h5 {
+  color: #E7BE1A;
+}
+
+footer {
+  margin-top: 20px;
+  text-align: center; /* center align it with the container */
+}
+
+/* The white background content wrapper */
+.content {
+  /*background-color: #fff;*/
+  padding: 20px;
+  margin-top: 40px;
+  /*margin: 0 -20px;*/
+/*  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+          box-shadow: 0 1px 2px rgba(0,0,0,.15);*/
+}
+
+.slideshow {
+  background-image: url(../img/peace_bridge.jpg);
+  background-position: 0 center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+  margin: 0 -20px;
+  -webkit-box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
+     -moz-box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
+          box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
+}
+
+.post .date {
+  text-align: right;
+}
+
+.post .author {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+#map > img.thumbnail {
+  padding: 10px;
+  -webkit-box-shadow: inset 0 0 12px 7px rgba(241, 196, 14, 0.9);
+  -moz-box-shadow: inset 0 0 12px 7px rgba(241, 196, 14, 0.9);
+  box-shadow: inset 0 0 12px 7px rgba(241, 196, 14, 0.9);
+}
+
+.twitter-feed {
+  background-color: #141414;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  padding: 0px;
+  border: 1px solid #141414 !important;
+  min-height: 340px;
+}
+
+.twitter-feed h2 {
+  text-align: center;
+}
+
+.opaque {
+  opacity: 0.9;
+  padding: 20px;
+  margin: 50px;
+}
+
+.events, .sponsors {
+  /*position: fixed;*/
+  background-color: #fff;
+  padding: 20px;
+  margin: 10px 0;
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+          box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+
+/* Page header tweaks */
+.page-header {
+  background-color: #f5f5f5;
+  padding: 20px 20px 10px;
+  margin: -20px -20px 20px;
+}
+
+/* posts index */
+.post > h3.title {
+  position:relative;
+  padding-top:10px;
+  border-top:3px solid #eee;
+}
+.post > h3.title span.date { 
+  position:absolute;
+  right:0;
+  font-size:0.9em;
+}
+.post > .more {
+  margin:10px 0;
+  text-align:left;
+}
+
+/* tag_box ======================================================== */
+
+.tag_box {
+  list-style:none;
+  margin:0;
+  padding:5px 0 ;
+  overflow:hidden;
+}
+.tag_box li {
+  line-height:28px;
+}
+.tag_box.inline li {
+  float:left;
+}
+.tag_box a {
+  padding: 3px 6px;
+  margin: 2px;
+  background: #eee;
+  color:#005F6B;
+  border-radius: 3px;
+  text-decoration:none;
+}
+.tag_box a span{
+  vertical-align:super;
+  font-size:0.8em;
+}
+.tag_box a.active {
+  background:#57A957;
+  border:1px solid #4C964D;
+  color:#FFF;
+}
