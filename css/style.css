@@ -144,3 +144,9 @@ footer {
   padding: 20px;
   margin: 50px;
 }
+
+span.bold {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #E2D156;
+}

@@ -7,7 +7,34 @@ $(function() {
 
 	var Meetups = can.Control({
 		init: function() {
-			this.element.html(can.view('views/meetups.mustache', {}));
+			var el = this.element;
+			var options = {
+				page: 3,
+				status: 'upcoming',
+				// text_format: 'plain'
+			};
+			MeetupMeetups.findAll(options).done(function(response) {
+
+				var upcoming = response.attr('results');
+
+				for (var index in upcoming){
+					if (index === 'time'){
+						upcoming.attr('start', new Date(upcoming.time));
+						upcoming.attr('date', upcoming.attr('start').toLocaleDateString());
+					}
+
+					if (index === 'duration'){
+						var date = new Date();
+						upcoming.attr('end', date.setDate(upcoming.start.getDate() + upcoming.duration));
+					}
+				}
+
+				console.log(upcoming);
+
+				el.html(can.view('views/meetups.mustache', {
+					upcoming: upcoming
+				}));
+			});
 		}
 	});
 
@@ -25,9 +52,17 @@ $(function() {
 	var About = can.Control({
 		init: function() {
 			var el = this.element;
-			MeetupGroup.findAll().done(function(group) {
+			MeetupGroup.findAll().done(function(response) {
+
+				var group = response.attr('results')[0];
+
+				// Meetup gives the description with <p> tags, WTF. Need to strip them off
+				var description = group.description.substring(3, group.description.length - 4);
+				// var description = $('.description').html(group.description);
+
 				el.html(can.view('views/about.mustache', {
-					group: group.results[0]
+					description: description,
+					members: group.members
 				}));
 			});
 		}
