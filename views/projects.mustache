@@ -21,20 +21,17 @@
 	      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 	      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 	      consequat... <a href="" target="_blank">more</a></p>
-
 	      <ul class="media-list">
-	      	{{#html_url}}
 	        <li class="media">
-	          <i class="icon-github">
+	          <i class="icon-github"></i>
 	          <a href="{{html_url}}" target="_blank"></i>Github Repo</a>
 	        </li>
-	        {{/html_url}}
-	        {{#homepage}}
+	        {{#if homepage}}
 	        <li class="media">
 	          <i class="icon-home-1"></i>
 	          <a href="{{homepage}}" target="_blank">Home Page</a>
 	        </li>
-	        {{/homepage}}
+	        {{/if}}
 	      </ul>
 	    </div>
 	    <div class="span4">

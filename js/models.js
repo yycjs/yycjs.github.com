@@ -1,52 +1,63 @@
 (function(namespace) {
-	namespace.GitHubProject = can.Model({
+	var meetupKey = 'e1d87f794c310476744591e2c216b';
+	var ApiModel = namespace.ApiModel = can.Model({
+		makeRequest: function() {
+			var url = [this.url].concat(can.makeArray(arguments)).join('/');
+			return can.ajax({
+				dataType: 'jsonp',
+				url: url
+			});
+		},
+		makeParameters: function(params) {
+			var result = [];
+			can.each(params, function(value, key) {
+				result.push(key + '=' + value);
+			});
+			return '?' + result.join('&');
+		}
+	}, {});
+
+	namespace.GitHubProject = ApiModel({
 		url: 'https://api.github.com',
 		findAll: function(options) {
-			return can.ajax({
-				dataType: 'jsonp',
-				url: [this.url, 'users', options.user, 'repos?sort=updated&callback=?'].join('/')
-			});
+			return this.makeRequest('users', options.user, 'repos?sort=updated&callback=?');
 		},
 		findOne: function(options) {
-			return can.ajax({
-				dataType: 'jsonp',
-				url: [this.url, 'repos', options.user, options.name].join('/')
+			return this.makeRequest(['repos', options.user, options.name]).pipe(function(response) {
+				return response.data;
 			});
 		}
 	}, {});
 
-	namespace.MeetupGroup = can.Model({
+	namespace.MeetupGroup = ApiModel({
 		url: 'https://api.meetup.com',
 		findAll: function(options) {
-			return can.ajax({
-				dataType: 'jsonp',
-				url: [this.url, '2', 'groups', '?key=e1d87f794c310476744591e2c216b&sign=true&group_urlname=YYC-js'].join('/')
+			var parameters = this.makeParameters(can.extend({
+				key: meetupKey,
+				sign: true
+			}, options));
+			return this.makeRequest('2', 'groups', parameters);
+		},
+		findOne: function(options) {
+			return this.findAll(options).pipe(function(data) {
+				return data.results[0];
 			});
 		}
 	}, {});
 
-	namespace.MeetupMeetups = can.Model({
+	namespace.MeetupMeetups = ApiModel({
 		url: 'https://api.meetup.com',
 		findAll: function(options) {
-			var urlOptions = '';
-
-			for (var key in options){
-				urlOptions += key.toString() + '=' + options[key] + '&';
-			}
-
-			// Remove the last '&'
-			urlOptions = '&' + urlOptions.substring(0, urlOptions.length - 1);
-
-			return can.ajax({
-				dataType: 'jsonp',
-				url: [this.url, '2', 'events', '?key=e1d87f794c310476744591e2c216b&sign=true&group_urlname=YYC-js' + urlOptions].join('/')
+			var parameters = this.makeParameters(can.extend({
+				key: meetupKey,
+				sign: true
+			}, options));
+			return this.makeRequest('2', 'events', parameters).pipe(function(data) {
+				return data.results;
 			});
 		},
 		findOne: function(options) {
-			return can.ajax({
-				dataType: 'jsonp',
-				url: [this.url, '2', 'repos'].join('/')
-			});
+			//
 		}
 	}, {});
 })(window);

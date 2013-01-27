@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     cancompile : {
       dist : {
         // Compile all mustache files
-        src : 'templates/*.mustache',
+        src : 'views/*.mustache',
         // Save to views.production.js
         out : 'views.production.js'
       }
