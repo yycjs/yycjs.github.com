@@ -14,4 +14,14 @@
 			});
 		}
 	}, {});
+
+	namespace.MeetupGroup = can.Model({
+		url: 'https://api.meetup.com',
+		findAll: function(options) {
+			return can.ajax({
+				dataType: 'json',
+				url: [this.url, '2', 'groups', '?key=e1d87f794c310476744591e2c216b&sign=true&group_urlname=YYC-js'].join('/')
+			});
+		}
+	}, {});
 })(window);

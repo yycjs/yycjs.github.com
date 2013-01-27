@@ -24,7 +24,12 @@ $(function() {
 
 	var About = can.Control({
 		init: function() {
-			this.element.html(can.view('views/about.mustache', {}));
+			var el = this.element;
+			MeetupGroup.findAll().done(function(group) {
+				el.html(can.view('views/about.mustache', {
+					group: group.results[0]
+				}));
+			});
 		}
 	});
 
