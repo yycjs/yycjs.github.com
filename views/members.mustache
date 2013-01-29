@@ -1,0 +1,7 @@
+{{#members}}
+{{#if photo.thumb_link}}
+<a href="{{link}}" target="_blank">
+  <img style="width: 75px; height: 75px;" {{#photo.thumb_link}}src="{{.}}"{{/photo.thumb_link}} alt="{{name}}" title="{{name}}" />
+</a>
+{{/if}}
+{{/members}}

@@ -1,4 +1,8 @@
 $(function() {
+	var loading = function(el) {
+		return el.html(can.view('views/loading.mustache', {}));
+	}
+
 	var Blog = can.Control({
 		init: function() {
 			this.element.html(can.view('views/blog.mustache', {}));
@@ -7,11 +11,17 @@ $(function() {
 
 	var Meetups = can.Control({
 		init: function() {
-			var el = this.element;
+			var el = loading(this.element);
 			can.view('views/meetups.mustache', {
 				upcoming: MeetupMeetups.findAll({
 					group_urlname: 'yyc-js',
 					status: 'upcoming',
+					page: 2
+				}),
+				past: MeetupMeetups.findAll({
+					group_urlname: 'yyc-js',
+					status: 'past',
+					page: 10
 				})
 			}).done(function(frag) {
 				el.html(frag);
@@ -21,7 +31,7 @@ $(function() {
 
 	var Projects = can.Control({
 		init: function() {
-			var el = this.element;
+			var el = loading(this.element);
 			can.view('views/projects.mustache', {
 				projects: GitHubProject.findAll({ user: 'yycjs' })
 			}).done(function(frag) {
@@ -32,13 +42,20 @@ $(function() {
 
 	var About = can.Control({
 		init: function() {
-			var el = this.element;
+			var el = loading(this.element);
 			can.view('views/about.mustache', {
 				group: MeetupGroup.findOne({
 					group_urlname: 'yyc-js'
 				})
 			}).done(function(group) {
-				el.html(group);
+				el = el.html(group).find('.members');
+				can.view('views/members.mustache', {
+					members: MeetupMembers.findAll({
+						group_urlname: 'yyc-js'
+					})
+				}).done(function(frag) {
+					el.html(frag);
+				});
 			});
 		}
 	});

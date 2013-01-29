@@ -1,5 +1,4 @@
 (function(namespace) {
-	var meetupKey = 'e1d87f794c310476744591e2c216b';
 	var ApiModel = namespace.ApiModel = can.Model({
 		makeRequest: function() {
 			var url = [this.url].concat(can.makeArray(arguments)).join('/');
@@ -9,11 +8,27 @@
 			});
 		},
 		makeParameters: function(params) {
-			var result = [];
-			can.each(params, function(value, key) {
-				result.push(key + '=' + value);
+			return '?' + can.route.param(params);
+		}
+	}, {});
+
+	var MeetupModel = namespace.MeetupModel = ApiModel({
+		url: 'https://api.meetup.com',
+		apiKey: 'e1d87f794c310476744591e2c216b',
+		findAll: function(options) {
+			var key = this.apiKey,
+				parameters = this.makeParameters(can.extend({
+					key: key,
+					sign: true
+				}, options));
+			return this.makeRequest('2', this.type, parameters).pipe(function(data) {
+				return data.results;
 			});
-			return '?' + result.join('&');
+		},
+		findOne: function(options) {
+			return this.findAll(options).pipe(function(data) {
+				return data[0];
+			});
 		}
 	}, {});
 
@@ -29,35 +44,15 @@
 		}
 	}, {});
 
-	namespace.MeetupGroup = ApiModel({
-		url: 'https://api.meetup.com',
-		findAll: function(options) {
-			var parameters = this.makeParameters(can.extend({
-				key: meetupKey,
-				sign: true
-			}, options));
-			return this.makeRequest('2', 'groups', parameters);
-		},
-		findOne: function(options) {
-			return this.findAll(options).pipe(function(data) {
-				return data.results[0];
-			});
-		}
+	namespace.MeetupGroup = MeetupModel({
+		type: 'groups'
 	}, {});
 
-	namespace.MeetupMeetups = ApiModel({
-		url: 'https://api.meetup.com',
-		findAll: function(options) {
-			var parameters = this.makeParameters(can.extend({
-				key: meetupKey,
-				sign: true
-			}, options));
-			return this.makeRequest('2', 'events', parameters).pipe(function(data) {
-				return data.results;
-			});
-		},
-		findOne: function(options) {
-			//
-		}
+	namespace.MeetupMeetups = MeetupModel({
+		type: 'events'
+	}, {});
+
+	namespace.MeetupMembers = MeetupModel({
+		type: 'members'
 	}, {});
 })(window);

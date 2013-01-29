@@ -1,11 +1,11 @@
 <div class="container-fluid">
+  {{#group}}
   <div class="row-fluid">
     <div class="span12">
-      <h1>About Us Scripters</h1>
+      <h1>About Us {{who}}</h1>
       <hr>
   </div>
 
-  {{#group}}
   <div class="row-fluid">
     <div class="description">
       {{{description}}}
@@ -17,5 +17,9 @@
       <h3>Meet our <span class="bold">{{members}}</span> members</h3>
     </div>
   </div>
-  {{/groupt}}
+  {{/group}}
+
+  <div class="members">
+    Loading...
+  </div>
 </div>
