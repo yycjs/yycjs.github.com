@@ -32,6 +32,16 @@
 		}
 	}, {});
 
+	var GitHubModel = namespace.GitHubModel = ApiModel({
+		url: 'https://api.github.com'
+	}, {});
+
+	namespace.GitHubContent = GitHubModel({
+		findAll: function(options) {
+			// TODO
+		}
+	}, {});
+
 	namespace.GitHubProject = ApiModel({
 		url: 'https://api.github.com',
 		findAll: function(options) {

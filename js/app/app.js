@@ -99,10 +99,6 @@ $(function() {
 			if(this.options.mappings[val]) {
 				this.current = new this.options.mappings[val](this.element);
 			}
-			// else {
-			// 	this.options.state.attr('type', '');
-			// 	this.element.html(can.view('views/index.mustache', {}));
-			// }
 		}
 	});
 
