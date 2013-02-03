@@ -4452,7 +4452,16 @@
 
 	namespace.GitHubContent = GitHubModel({
 		findAll: function(options) {
-			// TODO
+			var dfd = can.Deferred();
+			this.makeRequest('repos', options.user, options.repository,
+				'contents', options.path).done(function(result) {
+					can.each(result.data, function(current) {
+						
+					});
+				})
+		},
+		findOne: function(options) {
+
 		}
 	}, {});
 
@@ -4502,7 +4511,16 @@ $(function() {
 
 	var Blog = can.Control({
 		init: function() {
-			this.element.html(can.view('views/blog.mustache', {}));
+			var el = loading(this.element);
+			can.view('views/blog.mustache', {
+				posts: GitHubContent.findAll({
+					user: 'yycjs',
+					repository: 'yycjs.github.com',
+					path: 'blog'
+				})
+			}).done(function(frag) {
+				el.html(frag).hide().fadeIn();
+			});
 		}
 	});
 

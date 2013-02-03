@@ -37,7 +37,7 @@ module.exports = function (grunt) {
 			}
 		},
 		watch: {
-			files: ['js/app/app.js', 'js/app/models.js', 'views/'],
+			files: ['js/app/app.js', 'js/app/models.js', 'views/*.mustache'],
 			tasks: ['default']
 		}
 	});

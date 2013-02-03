@@ -20,7 +20,16 @@ $(function() {
 
 	var Blog = can.Control({
 		init: function() {
-			this.element.html(can.view('views/blog.mustache', {}));
+			var el = loading(this.element);
+			can.view('views/blog.mustache', {
+				posts: GitHubContent.findAll({
+					user: 'yycjs',
+					repository: 'yycjs.github.com',
+					path: 'blog'
+				})
+			}).done(function(frag) {
+				el.html(frag).hide().fadeIn();
+			});
 		}
 	});
 

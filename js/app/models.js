@@ -38,7 +38,16 @@
 
 	namespace.GitHubContent = GitHubModel({
 		findAll: function(options) {
-			// TODO
+			var dfd = can.Deferred();
+			this.makeRequest('repos', options.user, options.repository,
+				'contents', options.path).done(function(result) {
+					can.each(result.data, function(current) {
+						
+					});
+				})
+		},
+		findOne: function(options) {
+
 		}
 	}, {});
 
