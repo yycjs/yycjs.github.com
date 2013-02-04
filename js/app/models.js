@@ -32,7 +32,26 @@
 		}
 	}, {});
 
-	var GithubModel = namespace.GitHubProject = ApiModel({
+	var GitHubModel = namespace.GitHubModel = ApiModel({
+		url: 'https://api.github.com'
+	}, {});
+
+	namespace.GitHubContent = GitHubModel({
+		findAll: function(options) {
+			var dfd = can.Deferred();
+			this.makeRequest('repos', options.user, options.repository,
+				'contents', options.path).done(function(result) {
+					can.each(result.data, function(current) {
+
+					});
+				})
+		},
+		findOne: function(options) {
+
+		}
+	}, {});
+
+	namespace.GitHubProject = ApiModel({
 		url: 'https://api.github.com',
 		findAll: function(options) {
 			return this.makeRequest('users', options.user, 'repos?sort=updated&callback=?');

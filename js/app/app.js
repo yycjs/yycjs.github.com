@@ -38,7 +38,16 @@ $(function() {
 
 	var Blog = can.Control({
 		init: function() {
-			this.element.html(can.view('views/blog.mustache', {}));
+			var el = loading(this.element);
+			can.view('views/blog.mustache', {
+				posts: GitHubContent.findAll({
+					user: 'yycjs',
+					repository: 'yycjs.github.com',
+					path: 'blog'
+				})
+			}).done(function(frag) {
+				el.html(frag).hide().fadeIn();
+			});
 		}
 	});
 
@@ -112,10 +121,6 @@ $(function() {
 			if(this.options.mappings[val]) {
 				this.current = new this.options.mappings[val](this.element);
 			}
-			// else {
-			// 	this.options.state.attr('type', '');
-			// 	this.element.html(can.view('views/index.mustache', {}));
-			// }
 		}
 	});
 
