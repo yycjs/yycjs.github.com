@@ -22,14 +22,14 @@ $(function() {
 		init: function() {
 			var el = loading(this.element);
 			can.view('views/blog.mustache', {
-				posts: GitHubContent.findAll({
+				posts: GitHubContent.findAllWithContent({
 					user: 'yycjs',
 					repository: 'yycjs.github.com',
 					path: 'blog'
 				})
 			}).done(function(frag) {
-				el.html(frag).hide().fadeIn();
-			});
+				el.html(frag);
+			})
 		}
 	});
 
@@ -58,7 +58,7 @@ $(function() {
 		init: function() {
 			var el = loading(this.element);
 			can.view('views/projects.mustache', {
-				projects: GitHubProject.findAll({ user: 'yycjs' })
+				projects: GitHubProject.findAllWithReadme({ user: 'yycjs' })
 			}).done(function(frag) {
 				el.html(frag).hide().fadeIn();
 			});
@@ -111,7 +111,7 @@ $(function() {
 		}
 	});
 
-	can.route('', {type: 'index'});
+	can.route('', { type: 'index' });
 	can.route(':type');
 	can.route.ready(false);
 	new Router('#content');

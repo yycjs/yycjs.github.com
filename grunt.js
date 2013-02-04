@@ -24,6 +24,7 @@ module.exports = function (grunt) {
 					'<banner:meta.banner>', // Banner
 					'js/lib/can.jquery.js',
 					'js/lib/can.view.mustache.js',
+					'js/lib/jquery.base64.js',
 					'js/app/models.js',
 					'js/app/app.js'
 				],

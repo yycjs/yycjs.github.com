@@ -1,11 +1,25 @@
 (function(namespace) {
 	var ApiModel = namespace.ApiModel = can.Model({
+		cache: {},
 		makeRequest: function() {
 			var url = [this.url].concat(can.makeArray(arguments)).join('/');
-			return can.ajax({
-				dataType: 'jsonp',
-				url: url
-			});
+			var deferred = can.Deferred();
+			var cache = this.cache;
+
+			if(cache[url]) {
+				deferred.resolve(cache[url]);
+			} else {
+				deferred = can.ajax({
+					dataType: 'jsonp',
+					url: url
+				});
+
+				deferred.then(function(response) {
+					cache[url] = response;
+				});
+			}
+
+			return deferred;
 		},
 		makeParameters: function(params) {
 			return '?' + can.route.param(params);
@@ -33,28 +47,53 @@
 	}, {});
 
 	var GitHubModel = namespace.GitHubModel = ApiModel({
+		id: 'url',
 		url: 'https://api.github.com'
 	}, {});
 
 	namespace.GitHubContent = GitHubModel({
 		findAll: function(options) {
-			var dfd = can.Deferred();
-			this.makeRequest('repos', options.user, options.repository,
-				'contents', options.path).done(function(result) {
-					can.each(result.data, function(current) {
-						
-					});
-				})
+			return this.makeRequest('repos', options.user, options.repository, 'contents', options.path)
+				.pipe(function(result) {
+					return result.data;
+				});
 		},
-		findOne: function(options) {
-
+		findAllWithContent: function(options) {
+			return this.findAll(options).then(function(models) {
+				models.each(function(content) {
+					can.ajax({
+						url: content.attr('url'),
+						beforeSend: function setHeader(xhr) {
+							xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
+						}
+					}).then(function(markdown) {
+						content.attr('content', markdown);
+					});
+				});
+			});
 		}
 	}, {});
 
 	namespace.GitHubProject = ApiModel({
 		url: 'https://api.github.com',
 		findAll: function(options) {
-			return this.makeRequest('users', options.user, 'repos?sort=updated&callback=?');
+			return this.makeRequest('users', options.user, 'repos' + this.makeParameters({
+				sort: 'updated'
+			}));
+		},
+		findAllWithReadme: function(options) {
+			return this.findAll(options).then(function(models) {
+				models.each(function(project) {
+					can.ajax({
+						url: project.attr('url') + '/readme',
+						beforeSend: function setHeader(xhr) {
+							xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
+						}
+					}).then(function(markdown) {
+						project.attr('readme', markdown);
+					});
+				});
+			});
 		},
 		findOne: function(options) {
 			return this.makeRequest(['repos', options.user, options.name]).pipe(function(response) {
