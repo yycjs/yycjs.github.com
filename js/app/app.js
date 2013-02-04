@@ -1,30 +1,37 @@
-$(function() {
+$(function () {
 	/*Mustache Helpers*/
-	can.Mustache.registerHelper('prettyDate', function(timestamp) {
+	can.Mustache.registerHelper('prettyDate', function (timestamp) {
 		var date = new Date(timestamp);
 
 		return date.toLocaleDateString();
 	});
 
-	can.Mustache.registerHelper('prettyTime', function(timestamp, duration) {
+	can.Mustache.registerHelper('prettyTime', function (timestamp, duration) {
 		var date = isNaN(parseInt(duration, 10)) ? new Date(timestamp) : new Date(timestamp + duration);
 
 		return date.getHours() + ':' + date.getMinutes();
 	});
 
+	can.Mustache.registerHelper('markdown', function(markdown) {
+
+	});
+
 	var footer = $('footer');
-	var loading = function(el) {
+	var loading = function (el) {
 		footer.hide();
 		return el.html(can.view('views/loading.mustache', {}));
 	};
-
-	var loaded = function(frag) {
+	var loaded = function (frag) {
 		footer.show();
 		return this.html(frag).hide().fadeIn();
 	}
+	var errorHandler = function(error) {
+		this.html(can.view('views/error.mustache', error));
+		footer.show();
+	}
 
 	var Index = can.Control({
-		init: function() {
+		init: function () {
 			var el = loading(this.element);
 			can.view('views/index.mustache', {
 				upcoming: MeetupMeetups.findAllWithHosts({
@@ -37,7 +44,7 @@ $(function() {
 	});
 
 	var Blog = can.Control({
-		init: function() {
+		init: function () {
 			var el = loading(this.element);
 			can.view('views/blog.mustache', {
 				posts: GitHubContent.findAllWithContent({
@@ -45,14 +52,14 @@ $(function() {
 					repository: 'yycjs.github.com',
 					path: 'blog'
 				})
-			}).done(function(frag) {
+			}).done(function (frag) {
 				el.html(frag);
 			})
 		}
 	});
 
 	var Meetups = can.Control({
-		init: function() {
+		init: function () {
 			var el = loading(this.element);
 			can.view('views/meetups.mustache', {
 				upcoming: MeetupMeetups.findAllWithHosts({
@@ -67,37 +74,34 @@ $(function() {
 					page: 10,
 					desc: true
 				})
-			}).done(can.proxy(loaded, el));
+			}).then(can.proxy(loaded, el), can.proxy(errorHandler, el));
 		}
 	});
 
 	var Projects = can.Control({
-		init: function() {
+		init: function () {
 			var el = loading(this.element);
 			can.view('views/projects.mustache', {
 				projects: GitHubProject.findAllWithReadme({ user: 'yycjs' })
-			}).done(function(frag) {
-				el.html(frag).hide().fadeIn();
-			});
+			}).done(can.proxy(loaded, el));
 		}
 	});
 
 	var About = can.Control({
-		init: function() {
-			var el = this.element;
-			can.view('views/about.mustache', {
-				group: MeetupGroup.findOne({
+		init: function () {
+			var el = loading(this.element);
+			MeetupGroup.findOne({
+				group_urlname: 'yyc-js'
+			}).then(function(group) {
+				MeetupMembers.findAll({
 					group_urlname: 'yyc-js'
-				})
-			}).done(function(group) {
-				el = el.html(group).find('.members');
-				loading(el);
-				can.view('views/members.mustache', {
-					members: MeetupMembers.findAll({
-						group_urlname: 'yyc-js'
-					})
-				}).done(can.proxy(loaded, el));
-			});
+				}).then(function(members) {
+					group.attr('memberList', members);
+					loaded.call(el, can.view('views/about.mustache', {
+						group: group
+					}));
+				}, can.proxy(errorHandler, el));
+			}, can.proxy(errorHandler, el));
 		}
 	});
 
@@ -113,21 +117,20 @@ $(function() {
 			state: can.route
 		}
 	}, {
-		init: function() {
+		init: function () {
 			this.element.html(can.view('views/index.mustache', {}));
 		},
-		'{state} type': function(cls, ev, val) {
-			if(this.current && this.current.element) {
+		'{state} type': function (cls, ev, val) {
+			if (this.current && this.current.element) {
 				this.current.destroy();
 			}
-			if(this.options.mappings[val]) {
+			if (this.options.mappings[val]) {
 				this.current = new this.options.mappings[val](this.element);
 			}
 		}
 	});
 
-	can.route('', { type: 'index' });
-	can.route(':type');
+	can.route(':type', { type: 'index' });
 	can.route.ready(false);
 	new Router('#content');
 	can.route.ready(true);
