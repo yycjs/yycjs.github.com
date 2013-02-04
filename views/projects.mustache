@@ -17,10 +17,8 @@
 
 	  <div class="row-fluid">
 	    <div class="description span8">
-	      <p>(Project Summary markdown) Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-	      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	      consequat... <a href="" target="_blank">more</a></p>
+        {{#if readme}}<p>{{markdown readme}}</p>{{/if}}
+
 	      <ul class="media-list">
 	        <li class="media">
 	          <i class="icon-github"></i>
