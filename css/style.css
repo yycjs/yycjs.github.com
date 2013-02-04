@@ -131,12 +131,11 @@ footer {
 }
 
 .slideshow {
-  background-image: url(../img/calgary_skyline.jpg);
-  background-position: 0 100%;
+  background-image: url(../img/fingertrap.jpg);
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;
-  /*margin: 0 -20px 10px;*/
   -webkit-box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
      -moz-box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
           box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
