@@ -1,24 +1,32 @@
 <div class="container-fluid">
   {{#group}}
   <div class="row-fluid">
-    <div class="span12">
-      <h1>About Us {{who}}</h1>
-      <hr>
-  </div>
-
-  <div class="row-fluid">
-    <div class="description">
-      {{{description}}}
+      <div class="span12">
+        <h1>About Us {{who}}</h1>
+        <hr>
     </div>
-  </div>
 
-  <div class="row-fluid">
-    <div class="stats">
-      <h3>Meet our <span class="bold">{{members}}</span> members</h3>
+    <div class="row-fluid">
+      <div class="description">
+        {{{description}}}
+      </div>
     </div>
-  </div>
-  {{/group}}
 
-  <div class="members">
+    <div class="row-fluid">
+      <div class="stats">
+        <h3>Meet our <span class="bold">{{members}}</span> members</h3>
+      </div>
+    </div>
+
+    <div class="members">
+      {{#memberList}}
+        {{#if photo.thumb_link}}
+        <a href="{{link}}" target="_blank">
+          <img class="img-circle member-photo" {{#photo.thumb_link}}src="{{.}}"{{/photo.thumb_link}} alt="{{name}}" title="{{name}}" />
+        </a>
+        {{/if}}
+      {{/memberList}}
+    </div>
+    {{/group}}
   </div>
 </div>

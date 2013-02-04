@@ -4422,6 +4422,7 @@
 	var ApiModel = namespace.ApiModel = can.Model({
 		cache: {},
 		makeRequest: function () {
+			var self = this;
 			var url = [this.url].concat(can.makeArray(arguments)).join('/');
 			var deferred = can.Deferred();
 			var cache = this.cache;
@@ -4429,13 +4430,17 @@
 			if (cache[url]) {
 				deferred.resolve(cache[url]);
 			} else {
-				deferred = can.ajax({
+				can.ajax({
 					dataType: 'jsonp',
 					url: url
-				});
-
-				deferred.then(function (response) {
-					cache[url] = response;
+				}).then(function (response) {
+					var error = self.errorCheck && self.errorCheck(response);
+					if(error) {
+						deferred.reject(error);
+					} else {
+						cache[url] = response;
+						deferred.resolve(response);
+					}
 				});
 			}
 
@@ -4449,6 +4454,16 @@
 	var MeetupModel = namespace.MeetupModel = ApiModel({
 		url: 'https://api.meetup.com',
 		apiKey: 'e1d87f794c310476744591e2c216b',
+		errorCheck: function(response) {
+			if(response.code || response.status) {
+				return {
+					who: 'Meetup',
+					message: response.problem + ': ' + response.details,
+					fallback: 'http://www.meetup.com/YYC-js'
+				};
+			}
+			return false;
+		},
 		findAll: function (options) {
 			var key = this.apiKey,
 				parameters = this.makeParameters(can.extend({
@@ -4479,11 +4494,12 @@
 				});
 		},
 		findAllWithContent: function (options) {
-			return this.findAll(options).then(function (models) {
+			var deferred = this.findAll(options);
+			deferred.then(function (models) {
 				models.each(function (content) {
 					can.ajax({
 						url: content.attr('url'),
-						beforeSend: function setHeader(xhr) {
+						beforeSend: function (xhr) {
 							xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
 						}
 					}).then(function (markdown) {
@@ -4491,6 +4507,7 @@
 						});
 				});
 			});
+			return deferred;
 		}
 	}, {});
 
@@ -4502,11 +4519,12 @@
 			}));
 		},
 		findAllWithReadme: function (options) {
-			return this.findAll(options).then(function (models) {
+			var deferred = this.findAll(options);
+			deferred.then(function (models) {
 				models.each(function (project) {
 					can.ajax({
 						url: project.attr('url') + '/readme',
-						beforeSend: function setHeader(xhr) {
+						beforeSend: function (xhr) {
 							xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
 						}
 					}).then(function (markdown) {
@@ -4514,6 +4532,7 @@
 						});
 				});
 			});
+			return deferred;
 		},
 		findOne: function (options) {
 			return this.makeRequest(['repos', options.user, options.name]).pipe(function (response) {
@@ -4553,33 +4572,41 @@
 		type: 'members'
 	}, {});
 })(window);
-$(function() {
+$(function () {
 	/*Mustache Helpers*/
-	can.Mustache.registerHelper('prettyDate', function(timestamp) {
+	can.Mustache.registerHelper('prettyDate', function (timestamp) {
 		var date = new Date(timestamp);
 
 		return date.toLocaleDateString();
 	});
 
-	can.Mustache.registerHelper('prettyTime', function(timestamp, duration) {
+	can.Mustache.registerHelper('prettyTime', function (timestamp, duration) {
 		var date = isNaN(parseInt(duration, 10)) ? new Date(timestamp) : new Date(timestamp + duration);
 
 		return date.getHours() + ':' + date.getMinutes();
 	});
 
+	can.Mustache.registerHelper('markdown', function(markdown) {
+		// TODO: convert markdown to html
+	});
+
 	var footer = $('footer');
-	var loading = function(el) {
+	var loading = function (el) {
 		footer.hide();
 		return el.html(can.view('views/loading.mustache', {}));
 	};
-
-	var loaded = function(frag) {
+	var loaded = function (frag) {
 		footer.show();
 		return this.html(frag).hide().fadeIn();
 	};
 
+	var errorHandler = function(error) {
+		this.html(can.view('views/error.mustache', error));
+		footer.show();
+	};
+
 	var Index = can.Control({
-		init: function() {
+		init: function () {
 			var el = loading(this.element);
 			can.view('views/index.mustache', {
 				upcoming: MeetupMeetups.findAllWithHosts({
@@ -4592,7 +4619,7 @@ $(function() {
 	});
 
 	var Blog = can.Control({
-		init: function() {
+		init: function () {
 			var el = loading(this.element);
 			can.view('views/blog.mustache', {
 				posts: GitHubContent.findAllWithContent({
@@ -4600,14 +4627,14 @@ $(function() {
 					repository: 'yycjs.github.com',
 					path: 'blog'
 				})
-			}).done(function(frag) {
+			}).done(function (frag) {
 				el.html(frag);
 			});
 		}
 	});
 
 	var Meetups = can.Control({
-		init: function() {
+		init: function () {
 			var el = loading(this.element);
 			can.view('views/meetups.mustache', {
 				upcoming: MeetupMeetups.findAllWithHosts({
@@ -4622,37 +4649,34 @@ $(function() {
 					page: 10,
 					desc: true
 				})
-			}).done(can.proxy(loaded, el));
+			}).then(can.proxy(loaded, el), can.proxy(errorHandler, el));
 		}
 	});
 
 	var Projects = can.Control({
-		init: function() {
+		init: function () {
 			var el = loading(this.element);
 			can.view('views/projects.mustache', {
 				projects: GitHubProject.findAllWithReadme({ user: 'yycjs' })
-			}).done(function(frag) {
-				el.html(frag).hide().fadeIn();
-			});
+			}).done(can.proxy(loaded, el));
 		}
 	});
 
 	var About = can.Control({
-		init: function() {
-			var el = this.element;
-			can.view('views/about.mustache', {
-				group: MeetupGroup.findOne({
+		init: function () {
+			var el = loading(this.element);
+			MeetupGroup.findOne({
+				group_urlname: 'yyc-js'
+			}).then(function(group) {
+				MeetupMembers.findAll({
 					group_urlname: 'yyc-js'
-				})
-			}).done(function(group) {
-				el = el.html(group).find('.members');
-				loading(el);
-				can.view('views/members.mustache', {
-					members: MeetupMembers.findAll({
-						group_urlname: 'yyc-js'
-					})
-				}).done(can.proxy(loaded, el));
-			});
+				}).then(function(members) {
+					group.attr('memberList', members);
+					loaded.call(el, can.view('views/about.mustache', {
+						group: group
+					}));
+				}, can.proxy(errorHandler, el));
+			}, can.proxy(errorHandler, el));
 		}
 	});
 
@@ -4668,21 +4692,20 @@ $(function() {
 			state: can.route
 		}
 	}, {
-		init: function() {
+		init: function () {
 			this.element.html(can.view('views/index.mustache', {}));
 		},
-		'{state} type': function(cls, ev, val) {
-			if(this.current && this.current.element) {
+		'{state} type': function (cls, ev, val) {
+			if (this.current && this.current.element) {
 				this.current.destroy();
 			}
-			if(this.options.mappings[val]) {
+			if (this.options.mappings[val]) {
 				this.current = new this.options.mappings[val](this.element);
 			}
 		}
 	});
 
-	can.route('', { type: 'index' });
-	can.route(':type');
+	can.route(':type', { type: 'index' });
 	can.route.ready(false);
 	new Router('#content');
 	can.route.ready(true);

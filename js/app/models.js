@@ -2,6 +2,7 @@
 	var ApiModel = namespace.ApiModel = can.Model({
 		cache: {},
 		makeRequest: function () {
+			var self = this;
 			var url = [this.url].concat(can.makeArray(arguments)).join('/');
 			var deferred = can.Deferred();
 			var cache = this.cache;
@@ -9,13 +10,17 @@
 			if (cache[url]) {
 				deferred.resolve(cache[url]);
 			} else {
-				deferred = can.ajax({
+				can.ajax({
 					dataType: 'jsonp',
 					url: url
-				});
-
-				deferred.then(function (response) {
-					cache[url] = response;
+				}).then(function (response) {
+					var error = self.errorCheck && self.errorCheck(response);
+					if(error) {
+						deferred.reject(error);
+					} else {
+						cache[url] = response;
+						deferred.resolve(response);
+					}
 				});
 			}
 
@@ -29,6 +34,16 @@
 	var MeetupModel = namespace.MeetupModel = ApiModel({
 		url: 'https://api.meetup.com',
 		apiKey: 'e1d87f794c310476744591e2c216b',
+		errorCheck: function(response) {
+			if(response.code || response.status) {
+				return {
+					who: 'Meetup',
+					message: response.problem + ': ' + response.details,
+					fallback: 'http://www.meetup.com/YYC-js'
+				};
+			}
+			return false;
+		},
 		findAll: function (options) {
 			var key = this.apiKey,
 				parameters = this.makeParameters(can.extend({
@@ -59,11 +74,12 @@
 				});
 		},
 		findAllWithContent: function (options) {
-			return this.findAll(options).then(function (models) {
+			var deferred = this.findAll(options);
+			deferred.then(function (models) {
 				models.each(function (content) {
 					can.ajax({
 						url: content.attr('url'),
-						beforeSend: function setHeader(xhr) {
+						beforeSend: function (xhr) {
 							xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
 						}
 					}).then(function (markdown) {
@@ -71,6 +87,7 @@
 						});
 				});
 			});
+			return deferred;
 		}
 	}, {});
 
@@ -82,11 +99,12 @@
 			}));
 		},
 		findAllWithReadme: function (options) {
-			return this.findAll(options).then(function (models) {
+			var deferred = this.findAll(options);
+			deferred.then(function (models) {
 				models.each(function (project) {
 					can.ajax({
 						url: project.attr('url') + '/readme',
-						beforeSend: function setHeader(xhr) {
+						beforeSend: function (xhr) {
 							xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
 						}
 					}).then(function (markdown) {
@@ -94,6 +112,7 @@
 						});
 				});
 			});
+			return deferred;
 		},
 		findOne: function (options) {
 			return this.makeRequest(['repos', options.user, options.name]).pipe(function (response) {

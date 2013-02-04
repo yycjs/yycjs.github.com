@@ -94,7 +94,6 @@ footer {
   width: 100%;
   margin-top: 20px;
   padding: 20px 0;
-  text-align: center; /* center align it with the container */
   background-color: #1B1B1B;
   background-image: -moz-linear-gradient(top,#222,#111);
   background-image: -webkit-gradient(linear,0 0,0 100%,from(#222),to(#111));
@@ -107,6 +106,14 @@ footer {
   -webkit-box-shadow: 0 -1px 15px rgba(0, 0, 0, 0.9);
      -moz-box-shadow: 0 -1px 15px rgba(0, 0, 0, 0.9);
           box-shadow: 0 -1px 15px rgba(0, 0, 0, 0.9);
+}
+
+.footer-social {
+	text-align: center;
+}
+
+.copyright {
+  text-align: center;
 }
 
 .footer-social i {
@@ -199,7 +206,7 @@ span.bold {
 }
 
 .meetup {
-  margin: 20px 0;
+  margin: 0 0 20px;
 }
 
 .dl-horizontal dt {
@@ -233,7 +240,7 @@ span.bold {
   }
 
   footer {
-    height: 100px;
+    height: 80px;
   }
 
   .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
@@ -247,6 +254,16 @@ span.bold {
 
   .container-fluid {
     margin: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  footer {
+    height: 100px;
+  }
+
+  .member-photo {
+    margin: 5px;
   }
 }
 
