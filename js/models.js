@@ -32,7 +32,7 @@
 		}
 	}, {});
 
-	namespace.GitHubProject = ApiModel({
+	var GithubModel = namespace.GitHubProject = ApiModel({
 		url: 'https://api.github.com',
 		findAll: function(options) {
 			return this.makeRequest('users', options.user, 'repos?sort=updated&callback=?');
@@ -44,15 +44,34 @@
 		}
 	}, {});
 
-	namespace.MeetupGroup = MeetupModel({
+	var MeetupGroup = namespace.MeetupGroup = MeetupModel({
 		type: 'groups'
 	}, {});
 
-	namespace.MeetupMeetups = MeetupModel({
-		type: 'events'
+	var MeetupMeetups = namespace.MeetupMeetups = MeetupModel({
+		type: 'events',
+		findAllWithHosts: function(options) {
+			var deferred = can.Deferred();
+			this.findAll(can.extend({ fields: 'event_hosts' }, options)).then(function(meetups){
+				meetups.each(function(meetup) {
+					var memberIds = $.map(meetup.attr('event_hosts'), function(data) {
+							return data.member_id;
+						}).join(',');
+
+					MeetupMembers.findAll({
+						member_id: memberIds
+					}).done(function(members){
+						meetup.attr('hosts', members);
+						deferred.resolve(meetups);
+					});
+				});
+			});
+
+			return deferred;
+		}
 	}, {});
 
-	namespace.MeetupMembers = MeetupModel({
+	var MeetupMembers = namespace.MeetupMembers = MeetupModel({
 		type: 'members'
 	}, {});
 })(window);
