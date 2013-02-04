@@ -25,6 +25,7 @@ module.exports = function (grunt) {
 					'js/lib/can.jquery.js',
 					'js/lib/bootstrap.min.js',
 					'js/lib/can.view.mustache.js',
+					'js/lib/jquery.tweet.js',
 					'js/lib/jquery.base64.js',
 					'js/app/models.js',
 					'js/app/app.js'
