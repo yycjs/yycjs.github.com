@@ -1,20 +1,38 @@
 $(function() {
+	/*Mustache Helpers*/
+	can.Mustache.registerHelper('prettyDate', function(timestamp) {
+		var date = new Date(timestamp);
+
+		return date.toLocaleDateString();
+	});
+
+	can.Mustache.registerHelper('prettyTime', function(timestamp, duration) {
+		var date = isNaN(parseInt(duration, 10)) ? new Date(timestamp) : new Date(timestamp + duration);
+
+		return date.getHours() + ':' + date.getMinutes();
+	});
+
+	var footer = $('footer');
 	var loading = function(el) {
+		footer.hide();
 		return el.html(can.view('views/loading.mustache', {}));
 	};
+
+	var loaded = function(frag) {
+		footer.show();
+		return this.html(frag).hide().fadeIn();
+	}
 
 	var Index = can.Control({
 		init: function() {
 			var el = loading(this.element);
 			can.view('views/index.mustache', {
-				upcoming: MeetupMeetups.findAll({
+				upcoming: MeetupMeetups.findAllWithHosts({
 					group_urlname: 'yyc-js',
 					status: 'upcoming',
 					page: 1
 				})
-			}).done(function(frag) {
-				el.html(frag).hide().fadeIn();
-			});
+			}).done(can.proxy(loaded, el));
 		}
 	});
 
@@ -37,7 +55,7 @@ $(function() {
 		init: function() {
 			var el = loading(this.element);
 			can.view('views/meetups.mustache', {
-				upcoming: MeetupMeetups.findAll({
+				upcoming: MeetupMeetups.findAllWithHosts({
 					group_urlname: 'yyc-js',
 					status: 'upcoming',
 					page: 2
@@ -45,12 +63,11 @@ $(function() {
 				past: MeetupMeetups.findAll({
 					group_urlname: 'yyc-js',
 					status: 'past',
+					fields: 'event_hosts',
 					page: 10,
 					desc: true
 				})
-			}).done(function(frag) {
-				el.html(frag).hide().fadeIn();
-			});
+			}).done(can.proxy(loaded, el));
 		}
 	});
 
@@ -79,9 +96,7 @@ $(function() {
 					members: MeetupMembers.findAll({
 						group_urlname: 'yyc-js'
 					})
-				}).done(function(frag) {
-					el.html(frag).hide().fadeIn();
-				});
+				}).done(can.proxy(loaded, el));
 			});
 		}
 	});

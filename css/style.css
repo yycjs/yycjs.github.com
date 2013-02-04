@@ -7,17 +7,24 @@ html, body {
   /*background-image: url(../img/fabric_plaid.png);*/
   background-repeat: repeat;
   font-family: 'Monda', sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 h1, h2, h3, h4, h5 {
   color: #E2D156;
-  font-family: 'Racing Sans One', cursive;
+  font-family: 'Racing Sans One', arial, cursive;
   text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.75);
 }
 
 [class^="icon-"], [class*=" icon-"] {
   font-size: 24px;
-  margin: 1px 20px 0 0;
+  margin: 1px 10px 0 0;
+}
+
+[class^="icon-meetup"], [class*=" icon-meetup"] {
+  font-size: 40px;
 }
 
 a, a > i {
@@ -63,10 +70,23 @@ hr {
   border-color: #474747;
 }
 
-/* Footer 
+#wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -100px;
+}
+
+/* Footer
 =====================================*/
+footer, #push {
+  height: 40px;
+}
 
 footer {
+  position: static;
+  bottom: 0;
+  width: 100%;
   margin-top: 20px;
   padding: 20px 0;
   text-align: center; /* center align it with the container */
@@ -94,18 +114,8 @@ footer {
   color: #9C9034;
 }
 
-/* The white background content wrapper */
 .content {
-  /*background-color: #fff;*/
-  padding: 20px;
-  margin-top: 40px;
-  /*margin: 0 -20px;*/
-/*  -webkit-border-radius: 0 0 6px 6px;
-     -moz-border-radius: 0 0 6px 6px;
-          border-radius: 0 0 6px 6px;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-          box-shadow: 0 1px 2px rgba(0,0,0,.15);*/
+  margin-top: 60px;
 }
 
 .slideshow {
@@ -114,7 +124,7 @@ footer {
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;
-  margin: 0 -20px 10px;
+  /*margin: 0 -20px 10px;*/
   -webkit-box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
      -moz-box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
           box-shadow: 0 2px 12px 2px rgba(0,0,0,.90);
@@ -164,6 +174,12 @@ footer {
   box-shadow: 0 0 10px 1px #000;
 }
 
+a:hover > img.member-photo {
+  -moz-box-shadow: 0 0 10px 1px #E2D156;
+  -webkit-box-shadow: 0 0 10px 1px #E2D156;
+  box-shadow: 0 0 10px 1px #E2D156;
+}
+
 span.bold {
   font-size: 1.4em;
   font-weight: bold;
@@ -181,6 +197,18 @@ span.bold {
   margin: 20px 0;
 }
 
+.dl-horizontal dt {
+  width: 60px;
+}
+
+.dl-horizontal dd {
+  margin-left: 60px;
+}
+
+.media, .media-body {
+  margin-top: 24px;
+}
+
 
 /* Responsive Overrides
 =====================================*/
@@ -188,16 +216,19 @@ span.bold {
   .navbar-inverse .nav-collapse .nav > li > a, .navbar-inverse .nav-collapse .dropdown-menu a {
     color: #E2D156;
   }
+
+  .content {
+    margin-top: -20px;
+  }
 }
 
 @media (max-width: 767px) {
-  footer {
-    margin: 0 -20px;
+  footer, #push {
+    height: 80px;
   }
 
-  .content {
-    padding: 0;
-    margin-top: 0;
+  .container-fluid {
+    margin: 0 20px;
   }
 }
 

@@ -2,7 +2,7 @@
   <div class="row-fluid">
     <div class="span12">
       <h2>{{name}}</h2>
-      <h3>{{date}} <a href="{{event_url}}"><i class="icon-meetup"></i></a></h3>
+      <h3>{{prettyDate time}} <a href="{{event_url}}"><i class="icon-meetup"></i></a></h3>
     </div>
   </div>
 
@@ -12,9 +12,9 @@
         <div class="span6">
           <dl class="dl-horizontal">
             <dt>Starts:</dt>
-            <dd>{{start.toLocaleTimeString()}}</dd>
+            <dd>{{prettyTime time}}</dd>
             <dt>Ends:</dt>
-            <dd>{{end.toLocaleTimeString()}}</dd>
+            <dd>{{prettyTime time duration}}</dd>
           </dl>
         </div>
         <div class="span6">
@@ -25,7 +25,7 @@
           </address>
         </div>
       </div>
-      
+
       <div class="row-fluid">
         <div id="map">
           <img class="img-rounded" src="http://maps.google.com/maps/api/staticmap?center={{venue.lat}},{{venue.lon}}&amp;zoom=14&amp;format=png&amp;maptype=roadmap&amp;mobile=true&amp;markers=color:Yellow|{{venue.lat}},{{venue.lon}}&amp;size=480x320&amp;key=ABQIAAAAQ127-gVdIM3nq38RBYCN-RRrZQw2CF6YFdWEO75V5821rhw7fBTGniMwnKw_COoRSFJ3rNONzbqycw&amp;sensor=false">
@@ -34,17 +34,29 @@
 
       <div class="row-fluid">
         <h3>Presenters</h3>
-        <ul class="media-list">
-          <li class="media">
-            <a class="pull-left" href="#">
-              <img class="img-circle member-photo" src="http://photos3.meetupstatic.com/photos/member/4/a/e/4/thumb_94459172.jpeg">
-            </a>
-            Eric Kryski
-            <a href="http://twitter.com/ekryski" target="_blank"><i class="icon-twitter"></i></a>
-            <a href="http://github.com/ekryski" target="_blank"><i class="icon-github"></i></a>
-            <a href="http://erickryski.com" target="_blank"><i class="icon-home-1"></i></a>
-          </li>
-        </ul>
+
+        {{#hosts}}
+        <div class="media">
+          <a class="pull-left" href="{{link}}" target="_blank">
+            <img class="img-circle member-photo" {{#photo.thumb_link}}src="{{.}}"{{/photo.thumb_link}}>
+          </a>
+          <div class="media-body">
+            <h4 class="media-heading">{{name}}</h4>
+            {{#other_services}}
+            {{#twitter}}
+            <a href="http://twitter.com/{{identifier}}" target="_blank"><i class="icon-twitter"></i></a>
+            {{/twitter}}
+            {{#linkedin}}
+            <a href="{{identifier}}" target="_blank"><i class="icon-linkedin"></i></a>
+            {{/linkedin}}
+            {{#facebook}}
+            <a href="{{identifier}}" target="_blank"><i class="icon-facebook"></i></a>
+            {{/facebook}}
+            {{/other_services}}
+          </div>
+        </div>
+        {{/hosts}}
+
       </div>
     </div>
     <div class="description span8">
