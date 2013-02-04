@@ -21,7 +21,7 @@ $(function() {
 	var loaded = function(frag) {
 		footer.show();
 		return this.html(frag).hide().fadeIn();
-	}
+	};
 
 	var Index = can.Control({
 		init: function() {
@@ -47,7 +47,7 @@ $(function() {
 				})
 			}).done(function(frag) {
 				el.html(frag);
-			})
+			});
 		}
 	});
 

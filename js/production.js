@@ -1,4 +1,4 @@
-/*! yycjs-site - v0.1.0 - 2013-02-03
+/*! yycjs-site - v0.1.0 - 2013-02-04
 * http://yycjs.com
 * Copyright (c) 2013 Eric Kryski; Licensed  */
 
@@ -4576,7 +4576,7 @@ $(function() {
 	var loaded = function(frag) {
 		footer.show();
 		return this.html(frag).hide().fadeIn();
-	}
+	};
 
 	var Index = can.Control({
 		init: function() {
@@ -4602,7 +4602,7 @@ $(function() {
 				})
 			}).done(function(frag) {
 				el.html(frag);
-			})
+			});
 		}
 	});
 

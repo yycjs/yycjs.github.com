@@ -9,7 +9,7 @@ html, body {
   font-family: 'Monda', sans-serif;
   margin: 0;
   padding: 0;
-  /*width: 100%;*/
+  width: 100%;
 }
 
 h1, h2, h3, h4, h5 {
@@ -20,12 +20,12 @@ h1, h2, h3, h4, h5 {
 
 [class^="icon-"], [class*=" icon-"] {
   font-size: 24px;
-  margin: 1px 10px 0 0;
+  margin: 1px 20px 0 0;
 }
 
 [class^="icon-menu-1"], [class*=" icon-menu-1"] {
   font-size: 24px;
-  margin: -2px 20px 0 0;
+  margin: -2px 15px 0 -5px;
 }
 
 [class^="icon-meetup"], [class*=" icon-meetup"] {
@@ -145,9 +145,9 @@ footer {
 }
 
 #map > img {
-  -webkit-box-shadow: 0 0 10px 3px #9B9B9B;
-  -moz-box-shadow: 0 0 10px 3px #9B9B9B;
-  box-shadow: 0 0 10px 3px #9B9B9B;
+  -webkit-box-shadow: 0 0 6px 2px #9B9B9B;
+  -moz-box-shadow: 0 0 6px 2px #9B9B9B;
+  box-shadow: 0 0 6px 2px #9B9B9B;
 }
 
 .twitter-feed {
@@ -179,7 +179,7 @@ footer {
   box-shadow: 0 0 10px 1px #000;
 }
 
-a:hover > img.member-photo {
+img.member-photo:hover {
   -moz-box-shadow: 0 0 10px 1px #E2D156;
   -webkit-box-shadow: 0 0 10px 1px #E2D156;
   box-shadow: 0 0 10px 1px #E2D156;
@@ -228,8 +228,21 @@ span.bold {
 }
 
 @media (max-width: 767px) {
-  footer, #push {
-    height: 80px;
+  #push {
+    height: 0;
+  }
+
+  footer {
+    height: 100px;
+  }
+
+  .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .opaque {
+    margin: 10px;
   }
 
   .container-fluid {

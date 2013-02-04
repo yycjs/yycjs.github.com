@@ -2,7 +2,7 @@
   <div class="row-fluid">
     <div class="span12">
       <h2>{{name}}</h2>
-      <h3>{{prettyDate time}} <a href="{{event_url}}"><i class="icon-meetup"></i></a></h3>
+      <h3>{{prettyDate time}}</h3>
     </div>
   </div>
 
@@ -34,33 +34,31 @@
 
       <div class="row-fluid">
         <h3>Presenters</h3>
-
-        {{#hosts}}
-        <div class="media">
-          <a class="pull-left" href="{{link}}" target="_blank">
-            <img class="img-circle member-photo" {{#photo.thumb_link}}src="{{.}}"{{/photo.thumb_link}}>
-          </a>
-          <div class="media-body">
-            <h4 class="media-heading">{{name}}</h4>
-            {{#other_services}}
-            {{#twitter}}
-            <a href="http://twitter.com/{{identifier}}" target="_blank"><i class="icon-twitter"></i></a>
-            {{/twitter}}
-            {{#linkedin}}
-            <a href="{{identifier}}" target="_blank"><i class="icon-linkedin"></i></a>
-            {{/linkedin}}
-            {{#facebook}}
-            <a href="{{identifier}}" target="_blank"><i class="icon-facebook"></i></a>
-            {{/facebook}}
-            {{/other_services}}
-          </div>
-        </div>
-        {{/hosts}}
-
       </div>
+      {{#hosts}}
+      <div class="row-fluid">
+        <a class="pull-left" href="{{link}}" target="_blank">
+          <img class="img-circle member-photo" {{#photo.thumb_link}}src="{{.}}"{{/photo.thumb_link}}>
+        </a>
+        <div class="pull-left">
+          <h4>{{name}}</h4>
+          {{#other_services}}
+          {{#twitter}}
+          <a href="http://twitter.com/{{identifier}}" target="_blank"><i class="icon-twitter"></i></a>
+          {{/twitter}}
+          {{#linkedin}}
+          <a href="{{identifier}}" target="_blank"><i class="icon-linkedin"></i></a>
+          {{/linkedin}}
+          {{#facebook}}
+          <a href="{{identifier}}" target="_blank"><i class="icon-facebook"></i></a>
+          {{/facebook}}
+          {{/other_services}}
+        </div>
+      </div>
+      {{/hosts}}
     </div>
     <div class="description span8">
-      <h3>Itinerary</h3>
+      <h3>Itinerary <a href="{{event_url}}"><i class="icon-meetup"></i></a></h3>
       {{{description}}}
     </div>
   </div>
