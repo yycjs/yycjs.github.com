@@ -9,7 +9,7 @@ html, body {
   font-family: 'Monda', sans-serif;
   margin: 0;
   padding: 0;
-  width: 100%;
+  /*width: 100%;*/
 }
 
 h1, h2, h3, h4, h5 {
@@ -21,6 +21,11 @@ h1, h2, h3, h4, h5 {
 [class^="icon-"], [class*=" icon-"] {
   font-size: 24px;
   margin: 1px 10px 0 0;
+}
+
+[class^="icon-menu-1"], [class*=" icon-menu-1"] {
+  font-size: 24px;
+  margin: -2px 20px 0 0;
 }
 
 [class^="icon-meetup"], [class*=" icon-meetup"] {
