@@ -156,7 +156,7 @@ footer {
   box-shadow: 0 0 6px 2px #9B9B9B;
 }
 
-.twitter-feed {
+.twitter-feed, .project-description {
   background-color: #141414;
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
      -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -164,6 +164,15 @@ footer {
   padding: 0;
   border: 1px solid #141414 !important;
   min-height: 340px;
+}
+
+.project-description {
+  opacity: 0.9;
+  padding: 10px;
+  margin: 10px 0;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  border-radius: 0.5em;
 }
 
 .twitter-feed h2 {
@@ -241,7 +250,7 @@ span.bold {
   width: 100%;
 }
 
-.meetup {
+.meetup, .project {
   margin: 0 0 20px;
 }
 

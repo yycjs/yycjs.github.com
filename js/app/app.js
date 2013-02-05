@@ -14,6 +14,7 @@ $(function () {
 
   can.Mustache.registerHelper('markdown', function(markdown) {
     // TODO: convert markdown to html
+    return marked(markdown);
   });
 
   var footer = $('footer');
@@ -47,13 +48,13 @@ $(function () {
           username: "yycjs",
           join_text: "auto",
           avatar_size: 36,
-          count: 20,
+          count: 10,
           auto_join_text_default: " - ",
           auto_join_text_ed: " - ",
           auto_join_text_ing: " - ",
           auto_join_text_reply: " - ",
           auto_join_text_url: " - ",
-          loading_text: "loading tweets..."
+          loading_text: ""
         });
       });
     }
@@ -97,6 +98,11 @@ $(function () {
   var Projects = can.Control({
     init: function () {
       var el = loading(this.element);
+
+      // GitHubProject.findAllWithReadme({ user: 'yycjs' }).done(function(projects){
+      //   console.log(projects);
+      // });
+
       can.view('views/projects.mustache', {
         projects: GitHubProject.findAllWithReadme({ user: 'yycjs' })
       }).done(can.proxy(loaded, el));
