@@ -13,8 +13,7 @@ $(function () {
   });
 
   can.Mustache.registerHelper('markdown', function(markdown) {
-    // TODO: convert markdown to html
-    return marked(markdown);
+    return markdown ? marked(markdown) : "";
   });
 
   var footer = $('footer');
