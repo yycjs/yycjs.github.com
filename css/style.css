@@ -222,6 +222,11 @@ footer {
   margin: 50px;
 }
 
+.warning {
+  text-align: center;
+  margin: 100px 0;
+}
+
 .member-photo {
   width: 75px;
   height: 75px;
