@@ -230,6 +230,10 @@ footer {
   margin: 1px 32px 0 0;
 }
 
+.project img {
+  width: 100%;
+}
+
 .opaque {
   opacity: 0.9;
   padding: 20px;
