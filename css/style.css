@@ -225,6 +225,11 @@ footer {
   border-radius: 3px;
 }
 
+.project-links [class^="icon-"], .project-links [class*=" icon-"] {
+  font-size: 32px;
+  margin: 1px 32px 0 0;
+}
+
 .opaque {
   opacity: 0.9;
   padding: 20px;

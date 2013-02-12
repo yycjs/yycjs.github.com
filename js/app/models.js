@@ -97,12 +97,12 @@
 	}, {
 		html: can.compute(function() {
 			var markdown = this.attr('content');
-			console.log('htmlcontent', markdown, this);
+			// console.log('htmlcontent', markdown, this);
 			if(!markdown) {
 				return '';
 			}
 			markdown = window.base64.decode(markdown);
-			console.log(markdown);
+			// console.log(markdown);
 			return marked(markdown);
 		})
 	});
