@@ -21,15 +21,23 @@ h1, h2, h3, h4, h5 {
 [class^="icon-"], [class*=" icon-"] {
   font-size: 24px;
   margin: 1px 20px 0 0;
+  color: #FFEA52;
 }
 
 [class^="icon-menu-1"], [class*=" icon-menu-1"] {
   font-size: 24px;
   margin: -2px 15px 0 -5px;
+  color: #FFF9B5;
 }
 
 [class^="icon-meetup"], [class*=" icon-meetup"] {
   font-size: 40px;
+}
+
+[class^="icon-meetup"].large, [class*=" icon-meetup"].large {
+  font-size: 48px;
+  margin-top: -9px;
+  margin-left: -9px;
 }
 
 a, a > i {
@@ -131,8 +139,9 @@ footer {
 }
 
 .slideshow {
-  background-image: url(../img/fingertrap.jpg);
-  background-position: center;
+  /*background-image: url(../img/fingertrap.jpg);*/
+  background-image: url(../img/calgary_beltline.jpg);
+  background-position: center 65%;
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;
@@ -264,7 +273,7 @@ span.bold {
 }
 
 .dl-horizontal dd {
-  margin-left: 60px;
+  margin-left: 65px;
 }
 
 .media, .media-body {
@@ -304,6 +313,10 @@ span.bold {
 
   .container-fluid {
     margin: 0 20px;
+  }
+
+  .dl-horizontal dd {
+    margin-top: -20px;
   }
 }
 
