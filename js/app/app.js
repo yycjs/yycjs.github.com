@@ -12,10 +12,6 @@ $(function () {
     return date.getHours() + ':' + date.getMinutes();
   });
 
-  can.Mustache.registerHelper('markdown', function(markdown) {
-    return markdown ? marked(markdown) : "";
-  });
-
   var footer = $('footer');
   var loading = function (el) {
     footer.hide();
@@ -98,13 +94,9 @@ $(function () {
     init: function () {
       var el = loading(this.element);
 
-      // GitHubProject.findAllWithReadme({ user: 'yycjs' }).done(function(projects){
-      //   console.log(projects);
-      // });
-
       can.view('views/projects.mustache', {
-        projects: GitHubProject.findAllWithReadme({ user: 'yycjs' })
-      }).done(can.proxy(loaded, el));
+        projects: GitHubProject.findAllWithReadme({ user: 'yycjs' }).fail(can.proxy(errorHandler, el))
+      }).then(can.proxy(loaded, el));
     }
   });
 

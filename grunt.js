@@ -23,11 +23,12 @@ module.exports = function (grunt) {
 				src: [
 					'<banner:meta.banner>', // Banner
 					'js/lib/can.jquery.js',
-					'js/lib/bootstrap.min.js',
+					'js/lib/base64.js',
 					'js/lib/marked.js',
 					'js/lib/can.view.mustache.js',
 					'js/lib/jquery.tweet.js',
-					'js/lib/jquery.base64.js',
+					'js/lib/bootstrap-transition.js',
+					'js/lib/bootstrap-collapse.js',
 					'js/app/models.js',
 					'js/app/app.js'
 				],

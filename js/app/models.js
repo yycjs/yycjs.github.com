@@ -63,7 +63,17 @@
 
 	var GitHubModel = namespace.GitHubModel = ApiModel({
 		id: 'url',
-		url: 'https://api.github.com'
+		url: 'https://api.github.com',
+		errorCheck: function(response) {
+			if(response.meta && response.meta.status !== 200) {
+				return {
+					who: 'GitHub',
+					message: response.data.message,
+					fallback: 'http://www.github.com/yycjs'
+				};
+			}
+			return false;
+		}
 	}, {});
 
 	namespace.GitHubContent = GitHubModel({
@@ -73,26 +83,31 @@
 					return result.data;
 				});
 		},
-		findAllWithContent: function (options) {
-			var deferred = this.findAll(options);
-			deferred.then(function (models) {
-				models.each(function (content) {
-					can.ajax({
-						url: content.attr('url'),
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
-						}
-					}).then(function (markdown) {
-							content.attr('content', markdown);
-						});
-				});
+		findOne: function(options) {
+			var args = ['repos', options.user, options.repository];
+			if(!options.path || options.path === 'readme') {
+				args.push('readme');
+			} else {
+				args = args.concat(['contents', options.path]);
+			}
+			return this.makeRequest.apply(this, args).pipe(function(response) {
+				return response.data;
 			});
-			return deferred;
 		}
-	}, {});
+	}, {
+		html: can.compute(function() {
+			var markdown = this.attr('content');
+			console.log('htmlcontent', markdown, this);
+			if(!markdown) {
+				return '';
+			}
+			markdown = window.base64.decode(markdown);
+			console.log(markdown);
+			return marked(markdown);
+		})
+	});
 
-	namespace.GitHubProject = ApiModel({
-		url: 'https://api.github.com',
+	namespace.GitHubProject = GitHubModel({
 		findAll: function (options) {
 			return this.makeRequest('users', options.user, 'repos' + this.makeParameters({
 				sort: 'updated'
@@ -102,14 +117,12 @@
 			var deferred = this.findAll(options);
 			deferred.then(function (models) {
 				models.each(function (project) {
-					can.ajax({
-						url: project.attr('url') + '/readme',
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader('Accept', 'application/vnd.github-blob.raw');
-						}
-					}).then(function (markdown) {
-							project.attr('readme', markdown);
-						});
+					GitHubContent.findOne({
+						user: options.user,
+						repository: project.name
+					}).then(function (readme) {
+						project.attr('readme', readme);
+					});
 				});
 			});
 			return deferred;
@@ -138,9 +151,9 @@
 					MeetupMembers.findAll({
 						member_id: memberIds
 					}).done(function (members) {
-							meetup.attr('hosts', members);
-							deferred.resolve(meetups);
-						});
+						meetup.attr('hosts', members);
+						deferred.resolve(meetups);
+					});
 				});
 			});
 
