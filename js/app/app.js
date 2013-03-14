@@ -142,8 +142,10 @@ $(function () {
   }, {
     init: function () {
       this.element.html(can.view('views/index.mustache', {}));
+      _gaq.push(['_trackPageview']);
     },
     '{state} type': function (cls, ev, val) {
+      _gaq.push(['_trackPageview']);
       if (this.current && this.current.element) {
         this.current.destroy();
       }
