@@ -29,6 +29,7 @@ module.exports = function (grunt) {
 					'js/lib/jquery.tweet.js',
 					'js/lib/bootstrap-transition.js',
 					'js/lib/bootstrap-collapse.js',
+					'js/lib/bootstrap-tooltip.js',
 					'js/app/models.js',
 					'js/app/app.js'
 				],

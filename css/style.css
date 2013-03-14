@@ -90,6 +90,22 @@ hr {
   margin: 0 auto -100px;
 }
 
+.center {
+  text-align: center;
+}
+
+.logo {
+  margin: 10px;
+}
+
+.assembly.logo {
+  margin: 74px 0;
+}
+
+.thumbnail {
+  border: none;
+}
+
 /* Footer
 =====================================*/
 footer, #push {
@@ -165,23 +181,28 @@ footer {
   box-shadow: 0 0 6px 2px #9B9B9B;
 }
 
-.twitter-feed, .project-description {
-  background-color: #141414;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-  padding: 0;
-  border: 1px solid #141414 !important;
+.twitter-feed {
   min-height: 340px;
 }
 
-.project-description {
+.project-description,
+.sponsor-description,
+.twitter-feed {
   opacity: 0.9;
   padding: 10px;
   margin: 10px 0;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
   border-radius: 0.5em;
+  background-color: #141414;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  border: 1px solid #141414 !important;
+}
+
+.sponsor-description > p {
+  text-align: justify;
 }
 
 .twitter-feed h2 {
@@ -204,14 +225,6 @@ footer {
   padding: 0.5em;
   list-style-type: none;
 }
-  
-/*.tweet_list li a {
-  color: #0C717A;
-}*/
-  
-/*.tweet_list .tweet_even {
-  background-color: #303030;
-}*/
   
 .tweet_list .tweet_avatar {
   padding-right: .5em;
@@ -326,6 +339,10 @@ span.bold {
 
   .dl-horizontal dd {
     margin-top: -20px;
+  }
+
+  .assembly.logo {
+    margin: 10px 0;
   }
 }
 

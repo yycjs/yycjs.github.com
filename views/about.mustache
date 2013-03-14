@@ -14,15 +14,15 @@
 
     <div class="row-fluid">
       <div class="stats">
-        <h3>Meet our <span class="bold">{{members}}</span> members</h3>
+        <h3>Meet some of our <span class="bold">{{members}}</span> members</h3>
       </div>
     </div>
 
     <div class="members">
       {{#memberList}}
         {{#if photo.thumb_link}}
-        <a href="{{link}}" target="_blank">
-          <img class="img-circle member-photo" {{#photo.thumb_link}}src="{{.}}"{{/photo.thumb_link}} alt="{{name}}" title="{{name}}" />
+        <a href="{{link}}" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{name}}" target="_blank">
+          <img class="img-circle member-photo" {{#photo.thumb_link}}src="{{.}}"{{/photo.thumb_link}} alt="{{name}}"/>
         </a>
         {{/if}}
       {{/memberList}}

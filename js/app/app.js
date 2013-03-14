@@ -100,6 +100,14 @@ $(function () {
     }
   });
 
+  var Sponsors = can.Control({
+    init: function () {
+      var el = loading(this.element);
+      footer.show();
+      el.html(can.view('views/sponsors.mustache', {})).hide().fadeIn();
+    }
+  });
+
   var About = can.Control({
     init: function () {
       var el = loading(this.element);
@@ -113,6 +121,7 @@ $(function () {
           loaded.call(el, can.view('views/about.mustache', {
             group: group
           }));
+          $('a[data-toggle="tooltip"]').tooltip();
         }, can.proxy(errorHandler, el));
       }, can.proxy(errorHandler, el));
     }
@@ -125,6 +134,7 @@ $(function () {
         blog: Blog,
         meetups: Meetups,
         projects: Projects,
+        sponsors: Sponsors,
         about: About
       },
       state: can.route
