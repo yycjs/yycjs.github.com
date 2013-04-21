@@ -1,4 +1,4 @@
-/*! yycjs-site - v0.1.0 - 2013-03-14
+/*! yycjs-site - v0.1.0 - 2013-04-21
 * http://yycjs.com
 * Copyright (c) 2013 Eric Kryski; Licensed  */
 
@@ -6835,8 +6835,10 @@ $(function () {
   }, {
     init: function () {
       this.element.html(can.view('views/index.mustache', {}));
+      _gaq.push(['_trackPageview']);
     },
     '{state} type': function (cls, ev, val) {
+      _gaq.push(['_trackPageview']);
       if (this.current && this.current.element) {
         this.current.destroy();
       }
