@@ -247,10 +247,10 @@ footer {
   width: 100%;
   max-width: 300px;
   max-height: 300px;
-  -webkit-border-radius: 35px;
+/*  -webkit-border-radius: 35px;
   -moz-border-radius: 35px;
   border-radius: 35px;
-  border: solid 5px rgb(255, 253, 207);
+  border: solid 5px rgb(255, 253, 207);*/
 }
 
 .opaque {
