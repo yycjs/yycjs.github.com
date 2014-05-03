@@ -1,21 +1,30 @@
 {
-  "name" : "yycjs-site",
-  "description" : "The YYCjs Website",
-  "version" : "0.1.0",
+  "name": "yycjs-site",
+  "description": "The YYCjs Website",
+  "version": "0.1.0",
   "private": true,
-  "homepage" : "http://yycjs.com",
-  "author" : {
-    "name" : "Eric Kryski",
-    "email" : "e.kryski@gmail.com",
-    "web" : "http://erickryski.com"
+  "homepage": "http://yycjs.com",
+  "author": {
+    "name": "Eric Kryski",
+    "email": "e.kryski@gmail.com",
+    "web": "http://erickryski.com"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "git@github.com:yycjs/yycjs.github.com.git"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yycjs/yycjs.github.com.git"
   },
-  "keywords" : [ "yycjs", "javascript", "yyc", "calgary" ],
-  "devDependencies" : {
-    "grunt" : "~0.3.17",
-    "can-compile": ">=0.1.0"
+  "keywords": [
+    "yycjs",
+    "javascript",
+    "yyc",
+    "calgary"
+  ],
+  "devDependencies": {
+    "can-compile": ">=0.1.0",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-uglify": "~0.4.0"
+  },
+  "dependencies": {
+    "grunt": "~0.4.4"
   }
 }
